@@ -22,8 +22,7 @@ def wordsearch(puzzle: list, wordlist: list) -> None:
     for i in wordlist:
         if get_positions(puzzle, i) != []:
             print(i, get_positions(puzzle, i))
-            
-    # coloured_display(puzzle, get_positions(puzzle, i))
+            coloured_display(puzzle, get_positions(puzzle, i))
 
 
 
@@ -60,6 +59,37 @@ def valid_wordlist(wordlist: list) -> bool:
             return False
     return True
 
+def get_words(puzzle: list, row: int, col: int) -> list:
+    '''
+      Get the words in the puzzle starting at the given position
+      :param puzzle: list
+      :param row: int
+      :param col: int
+      :return: list
+    '''
+    words = []
+    words.append(get_word(puzzle, row, col, 0, 1))
+    words.append(get_word(puzzle, row, col, 1, 0))
+    words.append(get_word(puzzle, row, col, 1, 1))
+    words.append(get_word(puzzle, row, col, 1, -1))
+    return words
+
+def get_word(puzzle: list, row: int, col: int, drow: int, dcol: int) -> str:
+    '''
+      Get the word in the puzzle starting at the given position
+      :param puzzle: list
+      :param row: int
+      :param col: int
+      :param drow: int
+      :param dcol: int
+      :return: str
+    '''
+    word = ""
+    while 0 <= row < len(puzzle) and 0 <= col < len(puzzle[0]):
+        word += puzzle[row][col]
+        row += drow
+        col += dcol
+    return word
 
 def get_positions(puzzle: list, word: str) -> list:
     '''
@@ -69,10 +99,13 @@ def get_positions(puzzle: list, word: str) -> list:
       :return: list  # a list of tuples of the positions of the word
     '''
     positions = []
+    words = []
     for i in range(len(puzzle)):
         for j in range(len(puzzle[0])):
-            if puzzle[i][j] == word[0]:
-                positions.append((i, j))
+            words = get_words(puzzle, i, j)
+            for k in words:
+                if word in k:
+                    positions.append((i, j))
     return positions
 
 def basic_display(grid: list) -> None:
@@ -179,7 +212,7 @@ def test_wordsearch():
     puzzle1 = ['RUNAROUNDDL', 'EDCITOAHCYV', 'ZYUWSWEDZYA', 'AKOTCONVOYV',
                'LSBOSEVRUCI', 'BOBLLCGLPBD', 'LKTEENAGEDL', 'ISTREWZLCGY',
                'AURAPLEBAYG', 'RDATYTBIWRA', 'TEYEMROFINU']
-    good_wordlist2 = ["scalar", "tray", "blew", "sevruc"]
+    good_wordlist2 = ["run", "scalar", "tray", "blew", "sevruc"]
     wordsearch(puzzle1, good_wordlist2)
 
 
