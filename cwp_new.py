@@ -8,19 +8,24 @@ Please write your name
 
 # Reminder: You are not allowed to import any modules.
 
-def wordsearch(puzzle: list, wordlist: list) -> None:
+def wordsearch(puzzle: list, wordlist: list) -> list:
+    words_found = []
+    color = 31
     if not valid_puzzle(puzzle):
         print("Invalid puzzle")
-        return
+        return []
     if not valid_wordlist(wordlist):
         print("Invalid wordlist")
-        return
+        return []
     for i in wordlist:
-        if get_positions(puzzle, i) != []:
-            print(i, get_positions(puzzle, i))
-            coloured_display(puzzle, get_positions(puzzle, i))
+        wordposition = get_positions(puzzle,i)
+        if wordposition != []:
+            print(i, wordposition)
+            words_found.append((color,wordposition))
+            color = color + 1
         else:
-            print(i, get_positions(puzzle, i))
+            print(i, wordposition)
+    return words_found
 
 
 def valid_puzzle(puzzle: list) -> bool:
@@ -178,15 +183,15 @@ def basic_display(grid: list) -> None:
 
 
 def coloured_display(grid: list, positions: list) -> None:
-    positions = positions[0]
     for i in range(len(grid)):
         for j in range(len(grid[0])):
-            if (i, j) in positions:
-                print("\033[91m" + grid[i][j] + "\033[0m", end=" ")
-            if (i, j) not in positions:
-                print(grid[i][j], end=" ")
+            for x in positions:
+                matrix = x[1][0]
+                if (i,j) in matrix:
+                    print(f"\033[1;{x[0]}m",grid[i][j], end=" ")
+                    break
             else:
-                pass
+                print("\033[1;37;40m",grid[i][j], end=" ")  
         print()
 
 
@@ -247,14 +252,8 @@ def test_coloured_display():
                'LSBOSEVRUCI', 'BOBLLCGLPBD', 'LKTEENAGEDL', 'ISTREWZLCGY',
                'AURAPLEBAYG', 'RDATYTBIWRA', 'TEYEMROFINU']
     good_wordlist2 = ["scalar", "tray", "blew", "sevruc"]
-    final_list = []
-    for word in good_wordlist2:
-        temp = get_positions(puzzle1, word)
-        if temp is not None:
-            final_list.append(temp)
-    print(final_list)
-
-    # coloured_display(puzzle1, final_list)
+    final_list = wordsearch(puzzle1, good_wordlist2)
+    coloured_display(puzzle1, final_list)
 
 
 def test_wordsearch():
@@ -278,14 +277,3 @@ if __name__ == "__main__":
     test_wordsearch()
 
 
-def new_func():
-    print("Ture")
-    # basic solution
-    test_valid_puzzle()
-    test_valid_wordlist()
-    test_basic_display()
-
-    # full solution
-    test_coloured_display()
-    test_get_positions()
-    test_wordsearch()

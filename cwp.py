@@ -23,7 +23,6 @@ def wordsearch(puzzle: list, wordlist: list) -> list:
             print(i, wordposition)
             words_found.append((color,wordposition))
             color = color + 1
-            #coloured_display(puzzle, get_positions(puzzle, i))
         else:
             print(i, wordposition)
     return words_found
@@ -146,7 +145,6 @@ def coloured_display(grid: list, positions: list) -> None:
                     break
             else:
                 print("\033[1;37;40m",grid[i][j], end=" ")  
-
         print()
 
 
