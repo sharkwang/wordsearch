@@ -23,8 +23,8 @@ def wordsearch(puzzle: list, wordlist: list) -> None:
         if get_positions(puzzle, i) != []:
             print(i, get_positions(puzzle, i))
             coloured_display(puzzle, get_positions(puzzle, i))
-
-
+        else:
+            print(i, "not found")
 
 def valid_puzzle(puzzle: list) -> bool:
     '''
