@@ -10,6 +10,7 @@ Please write your name
 
 def wordsearch(puzzle: list, wordlist: list) -> list:
     words_found = []
+    color = 31
     if not valid_puzzle(puzzle):
         print("Invalid puzzle")
         return []
@@ -20,7 +21,8 @@ def wordsearch(puzzle: list, wordlist: list) -> list:
         wordposition = get_positions(puzzle,i)
         if wordposition != []:
             print(i, wordposition)
-            words_found.append((i,wordposition))
+            words_found.append((color,wordposition))
+            color = color + 1
             #coloured_display(puzzle, get_positions(puzzle, i))
         else:
             print(i, wordposition)
@@ -140,11 +142,11 @@ def coloured_display(grid: list, positions: list) -> None:
             for x in positions:
                 matrix = x[1][0]
                 if (i,j) in matrix:
-                    print("\033[1;31;40m",grid[i][j], end=" ")
+                    print(f"\033[1;{x[0]}m",grid[i][j], end=" ")
                     break
             else:
                 print("\033[1;37;40m",grid[i][j], end=" ")  
- 
+
         print()
 
 
@@ -221,12 +223,12 @@ def test_wordsearch():
 if __name__ == "__main__":
     # uncomment the test function individually
     # basic solution
-    #test_valid_puzzle()
-    #test_valid_wordlist()
-    #test_basic_display()
+    test_valid_puzzle()
+    test_valid_wordlist()
+    test_basic_display()
   
     #full solution
    
-    #test_get_positions()
-    #test_wordsearch()
+    test_get_positions()
+    test_wordsearch()
     test_coloured_display()
